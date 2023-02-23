@@ -10,9 +10,6 @@ class IsStaffOrReadOnly(permissions.IsAdminUser):
 class IsOwnerOrReadOnly(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
-        print("obj:",obj.author)
-        print("request",request.user)
-        print(obj.status=='p')
         if (request.method in permissions.SAFE_METHODS): 
             return True
         return bool(obj.author == request.user)

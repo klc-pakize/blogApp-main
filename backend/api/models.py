@@ -21,12 +21,12 @@ class Blog(models.Model):
     category = models.ForeignKey(Category, on_delete = models.CASCADE, related_name = 'blog')
     publish_date = models.DateTimeField(auto_now_add = True)  # readOnly: true
     author = models.ForeignKey(User, on_delete = models.CASCADE)  # readOnly: true
-    status = models.CharField(max_length = 5, choices = STATUS)
+    status = models.CharField(max_length = 5, choices = STATUS, blank=True, null=True)
     slug = models.SlugField(max_length=100, unique=True, editable=False)
     # comments readOnly: true
     # category_name readOnly: true
     # likes readOnly: true
-    post_views = models.IntegerField(default = 0) # readOnly: true
+    # post_views = models.IntegerField(default = 0) # readOnly: true
     # comment_count readOnly: true
     # likes_n readOnly: true
 
@@ -52,3 +52,9 @@ class Likes(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name = 'user_likes')
     post = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name = 'likes_n')
     likes= models.BooleanField(default = False)
+
+
+class PostViews(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name = 'user_post_views')
+    post_views = models.BooleanField(default = False)
+    post = models.ForeignKey(Blog, on_delete=models.CASCADE,related_name='post_views')

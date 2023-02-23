@@ -3,7 +3,7 @@ export const fetchLoginRegister = async (data, type) => {
   const urlLogin = "http://127.0.0.1:8000/auth/login/";
   const urlUpdate = `http://127.0.0.1:8000/auth/update_profile/${data?.id}/`;
   const url =
-    type == "login" ? urlLogin : type == "register" ? urlRegister : urlUpdate;
+    type === "login" ? urlLogin : type === "register" ? urlRegister : urlUpdate;
   try {
     const accessData = await fetch(url, {
       // Adding method type
