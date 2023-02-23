@@ -16,7 +16,7 @@ class Blog(models.Model):
         ('p', 'Published'),
     )
     title = models.CharField(max_length = 100, unique=True)
-    content = models.CharField(max_length = 100)
+    content = models.TextField()
     image = models.TextField(blank = True, null = True)
     category = models.ForeignKey(Category, on_delete = models.CASCADE, related_name = 'blog')
     publish_date = models.DateTimeField(auto_now_add = True)  # readOnly: true
@@ -42,7 +42,7 @@ class Blog(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_post_comments')
     time_stamp = models.DateTimeField(auto_now_add=True)
-    content = models.TextField()
+    content = models.CharField(max_length = 150)
     post = models.ForeignKey(Blog, on_delete=models.CASCADE,related_name='comments')
 
     def __str__(self):

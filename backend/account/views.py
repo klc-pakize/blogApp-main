@@ -31,8 +31,6 @@ class UpdateProfileView(generics.UpdateAPIView):
     serializer_class = UpdateUserSerializer
     
 
-
-
 class LogoutView(APIView):
     permission_classes = (IsAuthenticated,)
 

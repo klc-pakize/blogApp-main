@@ -1,11 +1,13 @@
-export const fetchLoginRegister = (data, type) => {
+export const fetchLoginRegister = async (data, type) => {
   const urlRegister = "http://127.0.0.1:8000/auth/register/";
   const urlLogin = "http://127.0.0.1:8000/auth/login/";
-  const url = type == "login" ? urlLogin : urlRegister;
+  const urlUpdate = `http://127.0.0.1:8000/auth/update_profile/${data?.id}/`;
+  const url =
+    type == "login" ? urlLogin : type == "register" ? urlRegister : urlUpdate;
   try {
-    const accessData = fetch(url, {
+    const accessData = await fetch(url, {
       // Adding method type
-      method: "POST",
+      method: type !== "update" ? "POST" : "PUT",
 
       // Adding body or contents to send
       body:
@@ -24,15 +26,23 @@ export const fetchLoginRegister = (data, type) => {
               bio: data.bio,
               image: data.image,
             }),
+
       // Adding headers to the request
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
+
+      headers:
+        type !== "update"
+          ? {
+              "Content-type": "application/json; charset=UTF-8",
+            }
+          : {
+              "Content-type": "application/json; charset=UTF-8",
+              Authorization: `Bearer ${data.access}`,
+            },
     })
       // Converting to JSON
       .then((response) => response.json());
 
-    if (type === "login") return accessData;
+    if (type === "login" || type === "update") return accessData;
 
     // Displaying results to console
   } catch (error) {
@@ -40,6 +50,18 @@ export const fetchLoginRegister = (data, type) => {
   }
 };
 
-// const getUserData = () => {
-//   fetch("http://127.0.0.1:8000/auth/user/");
-// };
+export const fetchUser = async (a) => {
+  try {
+    const userData = await fetch("http://127.0.0.1:8000/auth/user/", {
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: `Bearer ${a.access}`,
+      },
+    }).then((response) => response.json());
+    return userData;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const updateUser = () => {};

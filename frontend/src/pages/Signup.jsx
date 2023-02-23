@@ -43,7 +43,7 @@ const Signup = () => {
                         className="form-control form-control-lg border mb-4"
                       />
                       <label className="form-label " htmlFor="typeUserX">
-                        Username
+                        {signUpData.username ? "" : "Username"}
                       </label>
                     </div>
                     <div className="form-outline form-white mb-4">
@@ -60,7 +60,7 @@ const Signup = () => {
                         className="form-control form-control-lg border mb-4"
                       />
                       <label className="form-label " htmlFor="typeFirstNameX">
-                        FirstName
+                        {signUpData.username ? "" : "Firstname"}
                       </label>
                     </div>
                     <div className="form-outline form-white mb-4">
@@ -77,7 +77,7 @@ const Signup = () => {
                         className="form-control form-control-lg border mb-4"
                       />
                       <label className="form-label " htmlFor="typeLastnameX">
-                        Lastname
+                        {signUpData.username ? "" : "Lastname"}
                       </label>
                     </div>
                     <div className="form-outline form-white mb-4">
@@ -94,7 +94,7 @@ const Signup = () => {
                         className="form-control form-control-lg border mb-4"
                       />
                       <label className="form-label " htmlFor="typeEmailX">
-                        Email
+                        {signUpData.username ? "" : "Email"}
                       </label>
                     </div>
                     <div className="form-outline form-white mb-4">
