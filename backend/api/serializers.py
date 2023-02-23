@@ -38,6 +38,7 @@ class BlogSerializer(serializers.ModelSerializer):
     category_name = serializers.SerializerMethodField()
     likes_n = LikesSerializer(many = True, read_only = True)
     likes = serializers.SerializerMethodField()
+    # post_viewse = serializers.SerializerMethodField()
     class Meta:
         model = Blog
         fields = (
@@ -53,17 +54,27 @@ class BlogSerializer(serializers.ModelSerializer):
             'comments',
             'category_name',
             'likes',
-            # 'post_views',  # blogun görüntülenme sayısı
+            'post_views',  # blogun görüntülenme sayısı
             'comment_count',
             'likes_n',  # likes false olduğunda bu kısım gözükmemeli
         )
 
+    # Toplam kaç yorum yapıldığını hesaplar
     def get_comment_count(self, obj):
         return Comment.objects.filter(post=obj.id).count()
 
     def get_category_name(self, obj):
         return Category.objects.get(name=obj.category).name
 
+    # like sayısını hesaplar
     def get_likes(self, obj):
         return Likes.objects.filter(likes=True, post_id=obj.id).count()
+    
 
+
+    # def get_fields(self):
+    #     fields = super().get_fields()
+    #     print(Likes.objects.get(likes=False))
+    #     if Likes.objects.get(likes=False):
+    #         fields.pop('likes_n')
+    #     return fields

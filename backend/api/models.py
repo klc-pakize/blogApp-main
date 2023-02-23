@@ -26,7 +26,7 @@ class Blog(models.Model):
     # comments readOnly: true
     # category_name readOnly: true
     # likes readOnly: true
-    # post_views readOnly: true
+    post_views = models.IntegerField(default = 0) # readOnly: true
     # comment_count readOnly: true
     # likes_n readOnly: true
 
