@@ -69,17 +69,17 @@ class CommentView(ModelViewSet):
        serializer.save(user=serializer.context['request'].user)
 class LikesView(ModelViewSet):
 
-    queryset = Likes.objects.all()
+    queryset = Likes.objects.filter(likes = True)
     serializer_class = LikesSerializer
     
     def perform_create(self, serializer):
        serializer.save(user=serializer.context['request'].user)
        
-    def get_queryset(self):
-        if Likes.objects.filter(likes = False):
-           obj = Likes.objects.filter(likes = False).delete()
-           obj.save()
-        return obj
+    # def get_queryset(self):
+    #     if Likes.objects.filter(likes = False):
+    #        obj = Likes.objects.filter(likes = False).delete()
+    #        obj.save()
+    #     return obj
     
 class PostViewSet(ModelViewSet):
     queryset = PostViews.objects.all()

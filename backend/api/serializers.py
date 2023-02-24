@@ -35,8 +35,8 @@ class LikesSerializer(serializers.ModelSerializer):
             'user_id',
             'user',
             'post_id',
+            "likes"
         )
-
 class PostViewsSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField()
     user = serializers.StringRelatedField()
