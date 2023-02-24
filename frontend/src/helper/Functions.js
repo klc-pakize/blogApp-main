@@ -3,7 +3,7 @@ export const fetchLoginRegister = async (data, type) => {
   const urlLogin = "http://127.0.0.1:8000/auth/login/";
   const urlUpdate = `http://127.0.0.1:8000/auth/update_profile/${data?.id}/`;
   const url =
-    type === "login" ? urlLogin : type === "register" ? urlRegister : urlUpdate;
+    type == "login" ? urlLogin : type == "register" ? urlRegister : urlUpdate;
   try {
     const accessData = await fetch(url, {
       // Adding method type
@@ -11,7 +11,7 @@ export const fetchLoginRegister = async (data, type) => {
 
       // Adding body or contents to send
       body:
-        type === "login"
+        type == "login"
           ? JSON.stringify({
               username: data.username,
               password: data.password,
@@ -26,7 +26,6 @@ export const fetchLoginRegister = async (data, type) => {
               bio: data.bio,
               image: data.image,
             }),
-
       // Adding headers to the request
 
       headers:
@@ -42,7 +41,7 @@ export const fetchLoginRegister = async (data, type) => {
       // Converting to JSON
       .then((response) => response.json());
 
-    if (type === "login" || type === "update") return accessData;
+    if (type == "login" || type == "update") return accessData;
 
     // Displaying results to console
   } catch (error) {
@@ -58,6 +57,7 @@ export const fetchUser = async (a) => {
         Authorization: `Bearer ${a.access}`,
       },
     }).then((response) => response.json());
+
     return userData;
   } catch (error) {
     console.log(error.message);
@@ -78,9 +78,45 @@ export const passUpdate = async (data) => {
         Authorization: `Bearer ${data.access}`,
       },
     })
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then((data) => console.log(data));
   } catch (error) {
     console.log(error.message);
   }
+};
+
+export const getCategory = async () => {
+  try {
+    const data = await fetch("http://127.0.0.1:8000/api/categories/")
+      .then((res) => res.json())
+      .then((data) => data);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createBlog = async (data) => {
+  const url = "http://127.0.0.1:8000/api/blogs/";
+
+  try {
+    const dataBlog = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: `Bearer ${data.access}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+    return dataBlog;
+  } catch (error) {}
+};
+
+export const getBlog = async () => {
+  const data = await fetch("http://127.0.0.1:8000/api/blogs/")
+    .then((res) => res.json())
+    .then((data) => data);
+  return data;
 };

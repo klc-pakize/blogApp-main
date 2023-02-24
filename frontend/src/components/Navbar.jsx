@@ -14,11 +14,10 @@ const Navbar = () => {
       },
       body: JSON.stringify({
         refresh: refresh,
-      })
-        .then((res) => res.json())
-        .then((data) => console.log(data)),
+      }),
     });
   };
+
   return (
     <>
       {/* Navbar */}
@@ -60,23 +59,28 @@ const Navbar = () => {
             </ul>
             {/* Left links */}
             <div className="d-flex align-items-center">
-              <Link to={`/${refresh ? "logout" : "login"}`}>
+              <Link to={`/${refresh ? "" : "login"}`}>
                 <button
                   onClick={`${refresh ? () => handleLogout() : ""}`}
                   type="button"
                   className="btn btn-link px-3 me-2"
                 >
-                  {refresh ? "logout" : "login"}
+                  {refresh ? "Logout" : "Login"}
                 </button>
               </Link>
               <Link to="/signup">
                 <button type="button" className="btn btn-primary me-3">
-                  Sign up for free
+                  Sign up
                 </button>
               </Link>
               <Link to="/profile">
                 <button type="button" className="btn btn-primary me-3 rounded">
                   Profile
+                </button>
+              </Link>
+              <Link to="/createblog">
+                <button type="button" className="btn btn-primary me-3">
+                  Create Blog
                 </button>
               </Link>
             </div>
