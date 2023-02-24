@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLoginRegister } from "../helper/Functions";
 import { getUser } from "../store/slices/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const UserUpdate = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const [signUpData, setSignUpData] = useState({
     access: userData.access,
     id: userData.id,
@@ -21,6 +23,7 @@ const UserUpdate = () => {
     const a = await fetchLoginRegister(signUpData, "update");
     console.log("a", a);
     dispatch(getUser(a));
+    navigate("/");
   };
 
   return (

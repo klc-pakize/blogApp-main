@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { fetchLoginRegister } from "../helper/Functions";
+import { useNavigate } from "react-router-dom";
+
+const initValues = {
+  username: "",
+  password: "",
+  password2: "",
+  email: "",
+  first_name: "",
+  last_name: "",
+  bio: "",
+  image: "",
+};
 
 const Signup = () => {
-  const [signUpData, setSignUpData] = useState({
-    username: "",
-    password: "",
-    password2: "",
-    email: "",
-    first_name: "",
-    last_name: "",
-    bio: "",
-    image: "",
-  });
+  const navigate = useNavigate();
+  const [signUpData, setSignUpData] = useState(initValues);
 
   return (
     <>
@@ -170,7 +174,11 @@ const Signup = () => {
                       </a>
                     </p>
                     <button
-                      onClick={() => fetchLoginRegister(signUpData, "register")}
+                      onClick={() => {
+                        fetchLoginRegister(signUpData, "register");
+                        navigate("/login");
+                        setSignUpData(initValues);
+                      }}
                       className="btn btn-outline-light btn-lg px-5"
                       type="submit"
                     >

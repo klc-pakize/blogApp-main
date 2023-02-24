@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 
 const MyProfile = () => {
   const data = useSelector((state) => state.user);
-  console.log("data", data);
+  // console.log("data", data);
   return (
     <div className="gradient-custom-2" style={{ backgroundColor: "#9de2ff" }}>
       <MDBContainer className="py-5 h-100">
@@ -44,6 +44,15 @@ const MyProfile = () => {
                       style={{ height: "36px", overflow: "visible" }}
                     >
                       Edit profile
+                    </MDBBtn>
+                  </Link>
+                  <Link to="/updatepassword">
+                    <MDBBtn
+                      outline
+                      color="dark"
+                      style={{ height: "36px", overflow: "visible" }}
+                    >
+                      Update Password
                     </MDBBtn>
                   </Link>
                 </div>

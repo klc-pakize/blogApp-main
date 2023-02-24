@@ -21,7 +21,7 @@ class Blog(models.Model):
     category = models.ForeignKey(Category, on_delete = models.CASCADE, related_name = 'blog')
     publish_date = models.DateTimeField(auto_now_add = True)  # readOnly: true
     author = models.ForeignKey(User, on_delete = models.CASCADE)  # readOnly: true
-    status = models.CharField(max_length = 5, choices = STATUS, blank=True, null=True)
+    status = models.CharField(max_length = 5, choices = STATUS, default='d', blank=True, null=True)
     slug = models.SlugField(max_length=100, unique=True, editable=False)
     # comments readOnly: true
     # category_name readOnly: true
