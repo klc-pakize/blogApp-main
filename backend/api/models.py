@@ -58,3 +58,4 @@ class PostViews(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name = 'user_post_views')
     post_views = models.BooleanField(default = False)
     post = models.ForeignKey(Blog, on_delete=models.CASCADE,related_name='post_views')
+    time_stamp = models.DateTimeField(auto_now_add=True)

@@ -3,15 +3,17 @@ import { createSlice } from "@reduxjs/toolkit";
 const userSlice = createSlice({
   name: "user",
   initialState: {
+    id: "",
     refresh: "",
     access: "",
-    id: "",
     username: "",
     first_name: "",
     last_name: "",
     email: "",
     bio: "",
     image: "",
+    superA: false,
+    action: true,
   },
   reducers: {
     getUser: (state, action) => {
@@ -23,6 +25,7 @@ const userSlice = createSlice({
       state.last_name = action.payload?.last_name || state.last_name;
       state.email = action.payload?.email || state.email;
       state.bio = action.payload?.bio || state.bio;
+      state.superA = action.payload?.is_superuser || state.superA;
       state.image = action.payload?.image || state.image;
     },
     logoutUser: (state) => {
@@ -34,10 +37,15 @@ const userSlice = createSlice({
       state.last_name = "";
       state.email = "";
       state.bio = "";
+      state.superA = false;
       state.image = "";
+    },
+    actionGet: (state) => {
+      console.log(state.action);
+      state.action = !state.action;
     },
   },
 });
 
-export const { getUser, logoutUser } = userSlice.actions;
+export const { actionGet, getUser, logoutUser } = userSlice.actions;
 export default userSlice.reducer;

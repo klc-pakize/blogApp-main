@@ -31,7 +31,7 @@ const CreateBlogCard = () => {
     await createBlog(data);
     navigate("/");
   };
-  console.log(selectedCat);
+
   return (
     <div className="container d-flex justify-content-center align-items-center">
       <form onSubmit={handleSubmit}>
