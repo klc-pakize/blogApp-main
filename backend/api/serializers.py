@@ -38,7 +38,7 @@ class LikesSerializer(serializers.ModelSerializer):
             "likes"
         )
 class PostViewsSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField()
+    user_id = serializers.IntegerField(read_only =True)
     user = serializers.StringRelatedField()
     post_id = serializers.IntegerField()
     post= serializers.StringRelatedField()
@@ -91,8 +91,8 @@ class BlogSerializer(serializers.ModelSerializer):
         return Likes.objects.filter(likes=True, post_id=obj.id).count()
 
     def get_post_views(self, obj):
-        return PostViews.objects.filter(post_views = True , post_id=obj.id).count()
-
+            a =  PostViews.objects.filter(post_views = True , post_id=obj.id).count()
+            return a
     # def get_fields(self):
     #     fields = super().get_fields()
     #     request = self.context.get('request')

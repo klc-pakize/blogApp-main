@@ -28,10 +28,14 @@ const Card = (props) => {
       dispatch(actionGet());
     }
   };
-
+  const dataView = {
+    access: access,
+    user_id: id,
+    post_id: post.id,
+  };
   const handleView = async () => {
-    if (post.id) await postView().then((res) => res);
-    dispatch(actionGet);
+    await postView(dataView).then((res) => res);
+    dispatch(actionGet());
   };
   return (
     <>
@@ -51,10 +55,16 @@ const Card = (props) => {
           <div className="card-body">
             <h4 className="card-title">{post?.title}</h4>
             <p className="card-text">{post?.category_name}</p>
-            <p className="card-text">{post?.content.slice(0, 150)}...</p>
-            <Link onClick={() => handleView()} to={`/details/${post?.id}`}>
-              <button className="btn btn-primary">Read more</button>
+            <p className="card-text">{post?.content.slice(0, 50)}...</p>
+            <Link
+              onClick={() => {
+                handleView();
+              }}
+              to={`/details/${post?.id}`}
+            >
+              <button className="btn btn-primary">Read More</button>
             </Link>
+
             <div className="d-flex justify-content-between align-items-center mt-4">
               <div>
                 <i

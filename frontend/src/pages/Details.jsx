@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { sendLikeOrDelete } from "../helper/Functions";
+import { formatDate, sendComment, sendLikeOrDelete } from "../helper/Functions";
 import { actionGet } from "../store/slices/userSlice";
 
 const Details = () => {
   const [post, setPost] = useState({});
+  const [showComment, setShowComment] = useState(false);
+  const [comment, setComment] = useState("");
   const dispatch = useDispatch();
   const { action, access, id, superA } = useSelector((state) => state.user);
 
@@ -48,7 +50,15 @@ const Details = () => {
     }
   };
 
-  console.log(post);
+  const makeComment = async () => {
+    const data = {
+      comment,
+      access,
+      user_id: id,
+      post_id: post.id,
+    };
+    await sendComment(data);
+  };
   return (
     <div className="d-flex justify-content-center ">
       <div className="col-lg-6 col-md-6 mb-4 p-4">
@@ -61,6 +71,8 @@ const Details = () => {
           </div>
           <div className="card-body">
             <h4 className="card-title">{post?.title}</h4>
+            <h4 className="card-title">{formatDate(post?.publish_date)}</h4>
+            <h4 className="card-title left">Created by {post?.author}</h4>
             <p className="card-text">{post?.content}</p>
 
             <div className="d-flex justify-content-between align-items-center mt-4">
@@ -83,11 +95,40 @@ const Details = () => {
                 </div>
               </div>
             </div>
-            {(id == post.author_id || !!superA) && (
+            {(id == post.author_id || superA) && (
               <div className="d-flex justify-content-start">
                 <button className="btn btn-success">Update</button>
                 <button className="btn btn-danger">Delete</button>
+                <button
+                  onClick={() => {
+                    setShowComment(!showComment);
+                  }}
+                  className="btn btn-info"
+                >
+                  Make Comment
+                </button>
               </div>
+            )}
+            {showComment && (
+              <>
+                <div className="form-outline mt-4 mb-4">
+                  <textarea
+                    onChange={(e) => setComment(e.target.value)}
+                    value={comment}
+                    name="comment"
+                    id="typeCommentX"
+                    cols="5"
+                    rows="5"
+                    className="form-control form-control-lg border mb-4"
+                  ></textarea>
+                  <label className="form-label " htmlFor="typeCommentX">
+                    Comment
+                  </label>
+                </div>
+                <button onClick={() => makeComment()} className="btn btn-info">
+                  Post comment
+                </button>
+              </>
             )}
           </div>
         </div>

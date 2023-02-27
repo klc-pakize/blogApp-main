@@ -57,6 +57,7 @@ export const fetchUser = async (a) => {
         Authorization: `Bearer ${a.access}`,
       },
     }).then((response) => response.json());
+    console.log(userData);
 
     return userData;
   } catch (error) {
@@ -120,6 +121,21 @@ export const getBlog = async () => {
   return data;
 };
 
+export const postView = async (data) => {
+  await fetch("http://127.0.0.1:8000/api/post_views/", {
+    method: "POST",
+    body: JSON.stringify({
+      post_views: true,
+      user_id: data.user_id,
+      post_id: data.post_id,
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+      Authorization: `Bearer ${data.access}`,
+    },
+  });
+};
+
 export const sendLikeOrDelete = async (data) => {
   console.log(data);
   const urlLike = "http://127.0.0.1:8000/api/likes/";
@@ -127,14 +143,12 @@ export const sendLikeOrDelete = async (data) => {
   const url = !data?.likes_id ? urlLike : urlLikeDelete;
   if (!data?.likes_id) {
     const datal = await fetch(urlLike, {
-      method: !data?.likes_id ? "POST" : "DELETE",
-      body: !data?.likes_id
-        ? JSON.stringify({
-            user_id: data.user_id,
-            post_id: data.post_id,
-            likes: true,
-          })
-        : JSON.stringify({}),
+      method: "POST",
+      body: JSON.stringify({
+        user_id: data.user_id,
+        post_id: data.post_id,
+        likes: true,
+      }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
         Authorization: `Bearer ${data.access}`,
@@ -155,18 +169,32 @@ export const sendLikeOrDelete = async (data) => {
   }
 };
 
-export const postView = async (data) => {
-  await fetch("http://127.0.0.1:8000/api/post_views/"),
-    {
-      method: "POST",
-      body: JSON.stringify({
-        user_id: data.user_id,
-        post_id: data.post_id,
-        post_views: true,
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-        Authorization: `Bearer ${data.access}`,
-      },
-    };
+export const sendComment = async (data) => {
+  await fetch("http://127.0.0.1:8000/api/comments/", {
+    method: "POST",
+    body: JSON.stringify({
+      content: data.comment,
+      " user_id": data.user_id,
+      post_id: data.post_id,
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+      Authorization: `Bearer ${data.access}`,
+    },
+  });
+};
+
+export const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const formattedDay = day < 10 ? `0${day}` : day;
+  const formattedMonth = month < 10 ? `0${month}` : month;
+  const formattedYear = year.toString().substr(-2);
+  const formattedHours = hours < 10 ? `0${hours}` : hours;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  return `${formattedDay}-${formattedMonth}-${formattedYear} ${formattedHours}:${formattedMinutes}`;
 };

@@ -13,7 +13,7 @@ const userSlice = createSlice({
     bio: "",
     image: "",
     superA: false,
-    action: true,
+    action: 0,
   },
   reducers: {
     getUser: (state, action) => {
@@ -37,12 +37,12 @@ const userSlice = createSlice({
       state.last_name = "";
       state.email = "";
       state.bio = "";
-      state.superA = false;
       state.image = "";
+      state.superA = false;
     },
     actionGet: (state) => {
       console.log(state.action);
-      state.action = !state.action;
+      state.action = state.action + 1;
     },
   },
 });

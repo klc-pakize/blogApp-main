@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const { action } = useSelector((state) => state.user);
-
   useEffect(() => {
     getBlog().then((data) => setPosts(data));
   }, [action]);

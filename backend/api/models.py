@@ -39,6 +39,8 @@ class Blog(models.Model):
             self.slug = slug_sample
         super().save()
 
+    # def get_view_count(self):
+    #     return self.postview_set.count()
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_post_comments')
     time_stamp = models.DateTimeField(auto_now_add=True)

@@ -33,6 +33,14 @@ class BlogView(ModelViewSet):
 
     # def perform_create(self, serializer):
     #     serializer.save()
+   
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        view_query = PostViews.objects.filter(user = request.user, post = instance)
+        if not view_query.exists(): 
+            PostViews.objects.create(user = request.user, post = instance, post_views = True)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
     def get_queryset(self):
         
@@ -54,11 +62,9 @@ class BlogView(ModelViewSet):
     
     # def retrieve(self, request, *args, **kwargs):
     #     instance = self.get_object()
-    #     serializer_post = PostViewsSerializer
-    #     serializer_ = serializer_post['post_views'] = True
-    #     if serializer_.is_valid():
-    #         serializer_.save()
-    #     serializer = self.get_serializer(instance, serializer_)
+    #     if PostViews.objects.get(user_id=request.user.id) and  PostViews.objects.get(post_id = instance.id):
+    #         PostViews.objects.get(post_views = True)
+    #     serializer = self.get_serializer(instance)
     #     return Response(serializer.data)
 
 
@@ -70,18 +76,12 @@ class CommentView(ModelViewSet):
     def perform_create(self, serializer):
        serializer.save(user=serializer.context['request'].user)
 class LikesView(ModelViewSet):
-
     queryset = Likes.objects.filter(likes = True)
     serializer_class = LikesSerializer
     
     def perform_create(self, serializer):
        serializer.save(user=serializer.context['request'].user)
        
-    # def get_queryset(self):
-    #     if Likes.objects.filter(likes = False):
-    #        obj = Likes.objects.filter(likes = False).delete()
-    #        obj.save()
-    #     return obj
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
@@ -92,12 +92,16 @@ class LikesView(ModelViewSet):
 
     def perform_destroy(self, instance):
         instance.delete()
-
+       
+    # def get_queryset(self):
+    #     if Likes.objects.filter(likes = False):
+    #        obj = Likes.objects.filter(likes = False).delete()
+    #        obj.save()
+    #     return obj
+    
 class PostViewSet(ModelViewSet):
     queryset = PostViews.objects.all()
     serializer_class = PostViewsSerializer
-
-    def get_object(self):
-        obj = super().get_object()
-        PostViewSet.objects.get_or_create(user=self.request.user, post_views = True)
-        return obj
+    
+    def perform_create(self, serializer):
+       serializer.save(user=serializer.context['request'].user)
