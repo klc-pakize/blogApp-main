@@ -15,7 +15,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id','username', 'password', 'password2', 'email', 'first_name', 'last_name', 'bio', 'image',)
+        fields = ('username', 'password', 'password2', 'email', 'first_name', 'last_name', 'bio', 'image',)
         extra_kwargs = {
             'first_name': {'required': True},
             'last_name': {'required': True}
@@ -83,7 +83,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id','username', 'first_name', 'last_name', 'email','bio','image',)
+        fields = ('username', 'first_name', 'last_name', 'email','bio','image','id','is_superuser',)
         extra_kwargs = {
             'first_name': {'required': True},
             'last_name': {'required': True},
@@ -117,3 +117,10 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(
+        style={"input_type": "password"}, write_only=True)
+
