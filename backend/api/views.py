@@ -4,6 +4,7 @@ from .models import Category, Blog, Comment, Likes, PostViews
 from .serializers import CategorySerializer, BlogSerializer, CommentSerializer, LikesSerializer, PostViewsSerializer, UserBlogSerializer
 from .permissions import IsStaffOrReadOnly, IsOwnerOrReadOnly, IsOwnerOrReadOnlyComment
 
+
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
@@ -76,14 +77,12 @@ class LikesView(ModelViewSet):
        
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        self.perform_destroy(instance)
+        instance.delete()
         data = {
             "message":"Likes successfully deleted"
         }
-        return Response(data,status=status.HTTP_204_NO_CONTENT)
+        return Response(data)
 
-    def perform_destroy(self, instance):
-        instance.delete()
        
 class PostViewSet(ModelViewSet):
     queryset = PostViews.objects.all()

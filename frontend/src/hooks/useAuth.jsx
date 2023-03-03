@@ -1,46 +1,43 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { logoutUser } from '../store/slices/userSlice';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../store/slices/userSlice";
 
-
-
-
-const API_URL = 'http://127.0.0.1:8000/auth';
+const API_URL = "http://127.0.0.1:8000/auth";
 
 const useAuth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const authRequest = async (endpoint, method, body) => {
     setIsLoading(true);
     try {
       const response = await fetch(`${API_URL}/${endpoint}/`, {
         method: method,
-        credentials:"include",
+        credentials: "include",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-
         },
-        body: body ? JSON.stringify(body) : JSON.stringify({})
+        body: body ? JSON.stringify(body) : JSON.stringify({}),
       });
-      if(response.status==401){
-        return auth('reset')
-      }else if(endpoint=="reset"){
-        dispatch(logoutUser())
-        window.history.pushState({}, '', '/');
-      }else if(endpoint=="login/refresh" && response.status==200){
-        window.history.pushState({}, '', '/')
+      if (response.status == 401) {
+        return auth("reset");
+      } else if (endpoint == "reset") {
+        console.log(endpoint);
+        dispatch(logoutUser());
+        window.location.href("http://localhost:3000/");
+      } else if (endpoint == "login/refresh" && response.status == 200) {
+        console.log("200 refresh");
+        window.history.pushState({}, "", "/");
       }
 
       if (!response.ok) {
         const errorData = await response.json();
         setError(errorData.message);
         setIsLoading(false);
-        return 
+        return;
       }
-      
-      const responseData = await response.json();
 
+      const responseData = await response.json();
 
       setIsLoading(false);
       return responseData;
@@ -49,29 +46,29 @@ const useAuth = () => {
     }
   };
 
-  const auth = async (operation, data,id) => {
+  const auth = async (operation, data, id) => {
     switch (operation) {
-      case 'login':
-        return await authRequest('login', 'POST', data);
-      case 'refresh':
-        return await authRequest('login/refresh', 'POST',"");
-      case 'reset':
-        await authRequest('reset', 'POST',"");
+      case "login":
+        return await authRequest("login", "POST", data);
+      case "refresh":
+        return await authRequest("login/refresh", "POST", "");
+      case "reset":
+        await authRequest("reset", "POST", "");
         return;
-      case 'logout':
-        await authRequest('logout', 'POST',"");
+      case "logout":
+        await authRequest("logout", "POST", "");
         return;
-      case 'logout_all':
-        await authRequest('logout_all', 'POST',"");
-        return;  
-      case 'register':
-        return await authRequest('register', 'POST', data);
-      case 'change_password':
-        return await authRequest(`change_password/${id}`, 'PUT', data);
-      case 'resetPassword':
-        return await authRequest('reset-password', 'POST', data);
-      case 'confirmPasswordReset':
-        return await authRequest('confirm-password-reset', 'POST', data);
+      case "logout_all":
+        await authRequest("logout_all", "POST", "");
+        return;
+      case "register":
+        return await authRequest("register", "POST", data);
+      case "change_password":
+        return await authRequest(`change_password/${id}`, "PUT", data);
+      case "resetPassword":
+        return await authRequest("reset-password", "POST", data);
+      case "confirmPasswordReset":
+        return await authRequest("confirm-password-reset", "POST", data);
       default:
         throw new Error(`Invalid operation: ${operation}`);
     }
